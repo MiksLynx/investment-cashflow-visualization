@@ -2,3 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
+envestio-export/*
+mintos-export/*
+twino-export/*

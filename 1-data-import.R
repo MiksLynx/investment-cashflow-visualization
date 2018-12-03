@@ -3,10 +3,6 @@ library(readxl)
 library(lubridate)
 
 
-
-
-
-
 twinoData <- read_excel(
   "twino-export/twino-data.xlsx", 
   col_types = c(
@@ -19,10 +15,8 @@ twinoData <- read_excel(
   mutate(
     bookingDate = as_date(bookingDate),
     platform = 'twino'
-  )
-
-
-
+  ) %>%
+  arrange(bookingDate)
 
 
 
@@ -38,10 +32,8 @@ mintosData <- read_excel(
     bookingDate = as_date(bookingDate),
     details = str_replace(details, 'Loan ID.*', ''),
     platform = 'mintos'
-  )
-
-
-
+  ) %>%
+  arrange(bookingDate)
 
 
 
@@ -54,12 +46,16 @@ envestioData <- read_excel(
   )
 ) %>%
   mutate(
-    bookingDate = dmy(Date)
-  ) %>% View()
+    bookingDate = dmy(Date),
+    amount_eur = str_sub(Amount, 2, nchar(Amount)) %>% # removing mystical first symbol
+      str_replace_all(., '—', '-') %>% # replacing mystical minus with correct minus
+      as.numeric(),
+    platform = 'envestio'
+  ) %>%
+  select(-Date, -Amount) %>%
+  arrange(bookingDate)
 
 
-
-
-
-
+allData <- bind_rows(twinoData, mintosData, envestioData) %>%
+  arrange(bookingDate)
 
