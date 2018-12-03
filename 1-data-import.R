@@ -21,7 +21,7 @@ twinoData <- read_excel(
 
 
 mintosData <- read_excel(
-  "mintos-export/20181104-account-statement.xlsx", 
+  "mintos-export/mintos-data.xlsx", 
   col_types = c(
     "skip", "text", "text", 
     "numeric", "skip", "skip"
